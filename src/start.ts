@@ -69,12 +69,13 @@ app.get("/update/:zoneId/:domain", async (req, res, next) => {
 			}
 
 		} catch(err: any) {
-			console.log(util.inspect(err, true, null, true));
+			console.error("Full URI: ", req.originalUrl);
+			console.error(util.inspect(err, true, null, true));
 			if("response" in err) {
 				const response = err.response;
 				if("data" in response) {
-					console.log("\nResponse Data:")
-					console.log(util.inspect(response.data, true, null, true));
+					console.error("\nResponse Data:")
+					console.error(util.inspect(response.data, true, null, true));
 				}
 			}
 			res.status(401).contentType("text/plain").send("badauth");
@@ -82,7 +83,7 @@ app.get("/update/:zoneId/:domain", async (req, res, next) => {
 		}
 
 	} else {
-		console.log("Missing Request Parameters");
+		console.error("Missing Request Parameters");
 		res.status(400).contentType("text/plain").send("badsys");
 		return;
 	}
