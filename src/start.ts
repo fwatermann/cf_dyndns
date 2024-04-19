@@ -68,8 +68,15 @@ app.get("/update/:zoneId/:domain", async (req, res, next) => {
 				return;
 			}
 
-		} catch(err) {
+		} catch(err: any) {
 			console.log(util.inspect(err, true, null, true));
+			if("response" in err) {
+				const response = err.response;
+				if("data" in response) {
+					console.log("\nResponse Data:")
+					console.log(util.inspect(response.data, true, null, true));
+				}
+			}
 			res.status(401).contentType("text/plain").send("badauth");
 			return;
 		}
