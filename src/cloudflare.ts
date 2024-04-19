@@ -1,4 +1,5 @@
 import axios from "axios";
+import util from "util";
 
 export async function updateRecord(bearer : string, zoneId : string, recordId : string, content : string, type : "A"|"AAAA") : Promise<boolean> {
 
@@ -23,8 +24,15 @@ export async function updateRecord(bearer : string, zoneId : string, recordId : 
             console.log(`Could not update DNS-Record ${zoneId}/${recordId} to ${type}/${content} Error: ${response.data}`);
             return false;
         }
-    } catch(err) {
-        console.log(err);
+    } catch(err: any) {
+        console.error(util.inspect(err, true, null, true));
+        if("response" in err) {
+            const response = err.response;
+            if("data" in response) {
+                console.error("\nResponse Data:")
+                console.error(util.inspect(response.data, true, null, true));
+            }
+        }
         return false;
     }
 }

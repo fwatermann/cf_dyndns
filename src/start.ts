@@ -4,6 +4,8 @@ import * as util from "util";
 
 const app = express();
 
+util.inspect.defaultOptions.depth = null;
+
 app.get("/update/:zoneId/:domain", async (req, res, next) => {
 
 	if(req.params.zoneId && req.params.domain && (req.query.ipv4 || req.query.ipv6)) {
@@ -40,7 +42,7 @@ app.get("/update/:zoneId/:domain", async (req, res, next) => {
 			let changes = 0;
 
 			for(let i = 0; i < records.length; i ++) {
-				if(records[i].type == "A" && ipv4 != undefined && ipv4 != null && records[i].content != ipv4) {
+				if(records[i].type == "A" && ipv4 != undefined && records[i].content != ipv4) {
 					let success = await CloudFlare.updateRecord(bearer, zoneId, records[i].id, ipv4 as string, "A");
 					if(success) {
 						changes ++;
@@ -49,7 +51,7 @@ app.get("/update/:zoneId/:domain", async (req, res, next) => {
 						return;
 					}
 				} 
-				if(records[i].type == "AAAA" && ipv6 != undefined && ipv6 != null && records[i].content != ipv6) {
+				if(records[i].type == "AAAA" && ipv6 != undefined && records[i].content != ipv6) {
 					let success = await CloudFlare.updateRecord(bearer, zoneId, records[i].id, ipv6 as string, "AAAA");
 					if(success) {
 						changes ++;
