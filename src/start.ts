@@ -1,5 +1,6 @@
 import express from "express";
 import * as CloudFlare from "./cloudflare";
+import * as util from "util";
 
 const app = express();
 
@@ -68,7 +69,7 @@ app.get("/update/:zoneId/:domain", async (req, res, next) => {
 			}
 
 		} catch(err) {
-			console.log(err);
+			console.log(util.inspect(err, true, null, true));
 			res.status(401).contentType("text/plain").send("badauth");
 			return;
 		}
