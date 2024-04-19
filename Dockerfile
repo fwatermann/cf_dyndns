@@ -1,4 +1,4 @@
-FROM node:lts as build-stage
+FROM node:lts-alpine as build-stage
 
 WORKDIR /app
 
@@ -15,7 +15,7 @@ RUN npm install --omit=dev --production
 
 ## Create Image
 
-FROM node:lts
+FROM node:lts-alpine
 
 WORKDIR /app
 
